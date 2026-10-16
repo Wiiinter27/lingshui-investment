@@ -13,7 +13,10 @@
 - index.html：文案、政策来源和结构。
 - styles.css：样式。
 - script.js：标签切换、政策展开和动画。
+- language-switcher.js / language-switcher.css：已打包的 JellyRadio 五语言切换组件。支持中文、英语、俄语、法语、西班牙语，并在浏览器中记住选择。
 - .nojekyll：静态文件直接发布。
+
+本仓库保存可直接部署的静态文件。JellyRadio 的 React 源码、翻译词典和构建说明保存在维护者本地项目中，修改后需重新构建并上传两个 language-switcher 文件。仅修改 index.html 的中文内容不会自动生成其他语言译文。
 
 原模板来源：https://github.com/vikod3/cloud_storage_ai_website
 

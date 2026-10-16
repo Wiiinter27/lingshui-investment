@@ -107,6 +107,7 @@ function activateAccordionPanel(panelName) {
 
 function updateScrollAccordion() {
   if (!accordionSection || !accordionCards.length) return;
+  if (window.innerWidth <= 820) return;
 
   const rect = accordionSection.getBoundingClientRect();
   const scrollable = Math.max(1, rect.height - window.innerHeight);
@@ -215,6 +216,16 @@ window.addEventListener('hashchange', () => revealDetail(location.hash));
 revealDetail(location.hash);
 
 const guideTabs = [...document.querySelectorAll('[data-guide]')];
+window.addEventListener('site-language-change', () => {
+  window.clearTimeout(typingTimer);
+  document.querySelectorAll('[data-typed]').forEach(node => {
+    node.textContent = node.dataset.typed;
+    node.dataset.typing = 'false';
+  });
+  const selected = guideTabs.find(tab => tab.getAttribute('aria-selected') === 'true');
+  if (selected) document.getElementById('guide-heading').textContent = selected.textContent;
+  requestAnimationFrame(updateScrollAccordion);
+});
 function selectGuide(index) {
   guideTabs.forEach((tab, i) => {
     const active = i === index;
