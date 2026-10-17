@@ -20,4 +20,6 @@
 
 原模板来源：https://github.com/vikod3/cloud_storage_ai_website
 
-字体使用 Google Fonts；抽象背景由 fragcoord.xyz 嵌入服务提供，需要联网。背景不是陵水实景。政策说明不能替代原文及主管部门认定。
+字体使用 Google Fonts。背景通过本地 cloud-compute.js 渲染，无需实时连接 fragcoord.xyz；cloud-compute-poster.png 是图形渲染不可用时的静态备用画面。背景不是陵水实景。政策说明不能替代原文及主管部门认定。
+
+背景来源：Cloud Compute，作者 @XorDev，https://fragcoord.xyz/s/c6zisyc6 。原着色器未注明开放许可证，作者保留权利；此处保留来源与署名，不将其声明为开源授权。适配包含变量初始化、WebGL 1/2、渲染分辨率限制及上下文恢复。

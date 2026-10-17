@@ -15,16 +15,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=cloud-compute-2" />
   <link rel="stylesheet" href="./language-switcher.css" />
 </head>
 
 <body>
   <main>
     <section class="hero" aria-labelledby="hero-title">
-      <iframe class="shader-bg" src="https://fragcoord.xyz/embed/c6zisyc6?viewport=1422x800"
-        title="抽象动态背景，非陵水实景" loading="eager" allow="autoplay; fullscreen" aria-hidden="true"
-        tabindex="-1" referrerpolicy="no-referrer"></iframe>
+      <canvas id="cloud-compute" class="shader-bg" aria-hidden="true"></canvas>
       <div class="shader-fallback" aria-hidden="true"></div>
 
       <header class="site-header">
@@ -40,6 +38,7 @@
         </div>
       </header>
       <div id="language-switcher"></div>
+      <p id="background-status" hidden role="status">动态背景暂不可用，请检查浏览器图形加速设置。</p>
 
       <div class="hero-layout">
         <div class="console-cluster" aria-label="陵水投资概览">
@@ -480,7 +479,8 @@
     </section>
   </main>
   <footer class="local-footer">陵水全球投资门户 · 概念展示，非政府官方网站。产业内容为合作方向介绍，具体条件以主管部门及项目运营方确认为准。背景为抽象视觉，非陵水实景。</footer>
-  <script defer src="./script.js"></script>
+  <script defer src="./cloud-compute.js"></script>
+  <script defer src="./script.js?v=cloud-compute-2"></script>
   <script defer src="./language-switcher.js"></script>
 </body>
 

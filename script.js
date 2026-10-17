@@ -1,7 +1,3 @@
-const shaderFrame = document.querySelector(".shader-bg");
-const shaderBaseUrl = "https://fragcoord.xyz/embed/c6zisyc6";
-const maxShaderWidth = 1422;
-const maxShaderHeight = 800;
 const consoleTabs = Array.from(document.querySelectorAll(".console-tab"));
 const consolePanes = Array.from(document.querySelectorAll(".console-pane"));
 const accordionSection = document.querySelector(".platform-accordion");
@@ -11,37 +7,6 @@ const pricingSection = document.querySelector(".pricing-section");
 const pricingBars = Array.from(document.querySelectorAll(".pricing-bar"));
 const operationsCube = document.querySelector(".modal-cube-shell");
 let typingTimer;
-
-function updateShaderViewport() {
-  if (!shaderFrame) return;
-  const aspect = window.innerWidth / Math.max(window.innerHeight, 1);
-  let width = maxShaderWidth;
-  let height = Math.round(width / aspect);
-
-  if (height > maxShaderHeight) {
-    height = maxShaderHeight;
-    width = Math.round(height * aspect);
-  }
-
-  width = Math.max(320, Math.min(maxShaderWidth, width));
-  height = Math.max(180, Math.min(maxShaderHeight, height));
-
-  const nextSrc = `${shaderBaseUrl}?viewport=${width}x${height}`;
-  if (shaderFrame.src !== nextSrc) shaderFrame.src = nextSrc;
-
-  const scale = Math.max(window.innerWidth / width, (window.innerHeight + 110) / height);
-  shaderFrame.style.setProperty("--shader-scale", scale.toFixed(3));
-  shaderFrame.style.width = `${width}px`;
-  shaderFrame.style.height = `${height}px`;
-}
-
-let resizeTimer;
-window.addEventListener("resize", () => {
-  window.clearTimeout(resizeTimer);
-  resizeTimer = window.setTimeout(updateShaderViewport, 180);
-});
-
-updateShaderViewport();
 
 function typeInto(target) {
   const value = target.dataset.typed || "";

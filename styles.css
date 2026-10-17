@@ -61,31 +61,21 @@ a {
   width: 100vw;
   height: 100%;
 }
-
 .shader-bg {
   z-index: -3;
-  left: 50%;
-  top: 50%;
-  width: 1422px;
-  height: 800px;
+  width: 100%;
+  height: 100%;
   border: 0;
-  transform: translate(-50%, -50%) scale(var(--shader-scale, 5)) translateZ(0);
-  transform-origin: center;
   pointer-events: none;
-  will-change: transform;
 }
-
+.shader-bg[data-state='unavailable'] { visibility: hidden; }
+#background-status { position: absolute; right: 24px; bottom: 12px; max-width: 32em; font-size: 12px; color: var(--ink); background: #17130de6; padding: 8px 12px; border-radius: 6px; z-index: 3; }
 .shader-fallback {
   left: 50%;
   z-index: -4;
-  background:
-    radial-gradient(circle at 18% 22%, rgba(234, 208, 154, 0.76), transparent 34%),
-    radial-gradient(circle at 82% 30%, rgba(255, 216, 121, 0.58), transparent 32%),
-    linear-gradient(135deg, #846f43, #f0d27c 52%, #fff2be);
-  opacity: 0.9;
+  background: #101820 url('./cloud-compute-poster.png') center / cover no-repeat;
   transform: translateX(-50%);
 }
-
 .site-header {
   display: flex;
   align-items: center;
