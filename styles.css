@@ -69,6 +69,26 @@ a {
   pointer-events: none;
 }
 .shader-bg[data-state='unavailable'] { visibility: hidden; }
+.background-toggle {
+  position: absolute;
+  right: clamp(20px, 5vw, 72px);
+  bottom: 24px;
+  z-index: 3;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #17130dd9;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 160ms ease-out, transform 160ms ease-out;
+}
+.background-toggle[hidden] { display: none; }
+.background-toggle:hover { background: #4d3f24; }
+.background-toggle:active { transform: scale(.97); }
+.background-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 #background-status { position: absolute; right: 24px; bottom: 12px; max-width: 32em; font-size: 12px; color: var(--ink); background: #17130de6; padding: 8px 12px; border-radius: 6px; z-index: 3; }
 .shader-fallback {
   left: 50%;

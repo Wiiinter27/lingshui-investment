@@ -18,9 +18,37 @@
   if (!gl) gl = canvas.getContext('webgl', options);
   let program, resolution, time, frame = 0, previous = 0, visible = true, lost = false;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const started = performance.now();
+  let preference = null;
+  try { preference = localStorage.getItem('lingshui-background-motion'); } catch {}
+  let playing = preference === 'play' || (preference !== 'pause' && !reduced.matches);
+  let elapsed = 5, lastTick = null;
+  const control = document.createElement('button');
+  control.type = 'button';
+  control.className = 'background-toggle';
+  control.setAttribute('aria-controls', 'cloud-compute');
+  hero.append(control);
+  const labels = {
+    zh: ['播放背景', '暂停背景'], en: ['Play background', 'Pause background'],
+    ru: ['Включить анимацию', 'Остановить анимацию'],
+    fr: ['Animer le fond', 'Mettre en pause'], es: ['Animar fondo', 'Pausar fondo']
+  };
+  function updateControl() {
+    const locale = document.documentElement.lang.split('-')[0];
+    control.textContent = (playing ? 'Ⅱ ' : '▶ ') + (labels[locale] || labels.zh)[playing ? 1 : 0];
+    canvas.dataset.motion = playing ? 'playing' : 'paused';
+  }
+  control.addEventListener('click', () => {
+    playing = !playing;
+    preference = playing ? 'play' : 'pause';
+    try { localStorage.setItem('lingshui-background-motion', preference); } catch {}
+    updateControl();
+    resume();
+  });
+  window.addEventListener('site-language-change', updateControl);
+  updateControl();
   const fail = () => {
     canvas.dataset.state = 'unavailable';
+    control.hidden = true;
     if (status) status.hidden = false;
   };
   if (!gl) { fail(); return; }
@@ -80,13 +108,15 @@ void main() {
     time = gl.getUniformLocation(program, 'u_time');
     resize();
     canvas.dataset.state = 'ready';
+    control.hidden = false;
     if (status) status.hidden = true;
   }
-  function draw(now) {
+  function draw() {
     gl.useProgram(program);
     gl.uniform2f(resolution, canvas.width, canvas.height);
-    gl.uniform1f(time, reduced.matches ? 5 : 5 + (now - started) / 1000);
+    gl.uniform1f(time, elapsed);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    canvas.dataset.animationTime = elapsed.toFixed(3);
   }
   function resize() {
     if (lost) return;
@@ -101,23 +131,30 @@ void main() {
   }
   function tick(now) {
     frame = 0;
-    if (lost || document.hidden || !visible || reduced.matches) return;
+    if (lost || document.hidden || !visible || !playing) { lastTick = null; return; }
+    if (lastTick !== null) elapsed += Math.min((now - lastTick) / 1000, 0.1);
+    lastTick = now;
     if (now - previous >= 1000 / 30) { draw(now); previous = now; }
     frame = requestAnimationFrame(tick);
   }
   function resume() {
     cancelAnimationFrame(frame);
     frame = 0;
+    lastTick = null;
     if (!lost && visible && !document.hidden) {
       draw(performance.now());
-      if (!reduced.matches) frame = requestAnimationFrame(tick);
+      if (playing) frame = requestAnimationFrame(tick);
     }
   }
   try { initialize(); } catch (error) { console.warn(error.message); fail(); return; }
   new ResizeObserver(resize).observe(hero);
   new IntersectionObserver(entries => {visible = entries[0].isIntersecting; resume();}).observe(hero);
   document.addEventListener('visibilitychange', resume);
-  reduced.addEventListener('change', resume);
+  reduced.addEventListener('change', () => {
+    if (preference !== 'play' && preference !== 'pause') playing = !reduced.matches;
+    updateControl(); resume();
+  });
+  window.addEventListener('pageshow', resume);
   canvas.addEventListener('webglcontextlost', event => {event.preventDefault(); lost = true; cancelAnimationFrame(frame); fail();});
   canvas.addEventListener('webglcontextrestored', () => {lost = false; try {initialize(); resume();} catch {fail();}});
   resume();
